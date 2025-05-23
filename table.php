@@ -19,7 +19,7 @@ function checkAndCreateTablesAndColumns($botConn) {
     $hasCriticalError = false;
 
     $tableAdminSettings = "CREATE TABLE IF NOT EXISTS `admin_settings` (
-        `admin_id` int NOT NULL,
+        `admin_id` bigint NOT NULL,
         `total_traffic` bigint DEFAULT NULL,
         `used_traffic` bigint DEFAULT 0,
         `expiry_date` date DEFAULT NULL,
@@ -28,8 +28,8 @@ function checkAndCreateTablesAndColumns($botConn) {
         `hashed_password_before` varchar(255) DEFAULT NULL,
         `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         `last_expiry_notification` timestamp NULL DEFAULT NULL,
-        `last_traffic_notification` int DEFAULT NULL,
-        `last_traffic_notify` int DEFAULT NULL,
+        `last_traffic_notification` bigint DEFAULT NULL,
+        `last_traffic_notify` bigint DEFAULT NULL,
         `calculate_volume` varchar(50) DEFAULT 'used_traffic',
         PRIMARY KEY (`admin_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;";
@@ -44,7 +44,7 @@ function checkAndCreateTablesAndColumns($botConn) {
         `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
         `lang` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
         `state` varchar(50) DEFAULT NULL,
-        `admin_id` int DEFAULT NULL,
+        `admin_id` bigint DEFAULT NULL,
         `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         `data` text,
         `message_id` int DEFAULT NULL,
@@ -71,7 +71,7 @@ function checkAndCreateTablesAndColumns($botConn) {
 
     $tableAdminUsage = "CREATE TABLE IF NOT EXISTS `admin_usage` (
         `id` bigint NOT NULL AUTO_INCREMENT,
-        `admin_id` int NOT NULL,
+        `admin_id` bigint NOT NULL,
         `used_traffic_gb` decimal(10,2) NOT NULL,
         `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
@@ -96,7 +96,7 @@ function checkAndCreateTablesAndColumns($botConn) {
         'username' => "ALTER TABLE `user_states` ADD `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL;",
         'lang' => "ALTER TABLE `user_states` ADD `lang` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL;",
         'state' => "ALTER TABLE `user_states` ADD `state` varchar(50) DEFAULT NULL;",
-        'admin_id' => "ALTER TABLE `user_states` ADD `admin_id` int DEFAULT NULL;",
+        'admin_id' => "ALTER TABLE `user_states` ADD `admin_id` bigint DEFAULT NULL;",
         'updated_at' => "ALTER TABLE `user_states` ADD `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;",
         'data' => "ALTER TABLE `user_states` ADD `data` text;",
         'message_id' => "ALTER TABLE `user_states` ADD `message_id` int DEFAULT NULL;",
@@ -211,9 +211,9 @@ $hasCriticalError = checkAndCreateTablesAndColumns($botConn);
 
 $createMarzhelpLimits = "
 CREATE TABLE IF NOT EXISTS `marzhelp_limits` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `type` enum('exclude','dedicated') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `admin_id` int NOT NULL,
+  `admin_id` bigint NOT NULL,
   `inbound_tag` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_limit` (`type`,`admin_id`,`inbound_tag`),
